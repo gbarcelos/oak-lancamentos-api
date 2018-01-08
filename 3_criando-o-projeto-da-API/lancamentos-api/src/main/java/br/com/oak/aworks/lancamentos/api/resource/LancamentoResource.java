@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.oak.aworks.lancamentos.api.event.RecursoCriadoEvent;
 import br.com.oak.aworks.lancamentos.api.model.Lancamento;
-import br.com.oak.aworks.lancamentos.api.model.Pessoa;
 import br.com.oak.aworks.lancamentos.api.repository.LancamentoRepository;
+import br.com.oak.aworks.lancamentos.api.service.LancamentoService;
 
 @RestController
 @RequestMapping("/lancamentos")
@@ -27,7 +27,10 @@ public class LancamentoResource {
 
 	@Autowired
 	private LancamentoRepository lancamentoRepository;
-	
+
+	@Autowired
+	private LancamentoService lancamentoService;
+
 	@Autowired
 	private ApplicationEventPublisher publisher;
 
@@ -43,11 +46,11 @@ public class LancamentoResource {
 
 		return lancamento != null ? ResponseEntity.ok(lancamento) : ResponseEntity.notFound().build();
 	}
-	
+
 	@PostMapping
 	public ResponseEntity<Lancamento> criar(@Valid @RequestBody Lancamento lancamento, HttpServletResponse response) {
 
-		Lancamento lancamentoSalvo = lancamentoRepository.save(lancamento);
+		Lancamento lancamentoSalvo = lancamentoService.salvar(lancamento);
 
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, lancamentoSalvo.getCodigo()));
 
