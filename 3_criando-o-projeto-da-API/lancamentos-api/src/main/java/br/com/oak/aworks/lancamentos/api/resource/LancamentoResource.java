@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.oak.aworks.lancamentos.api.event.RecursoCriadoEvent;
 import br.com.oak.aworks.lancamentos.api.model.Lancamento;
 import br.com.oak.aworks.lancamentos.api.repository.LancamentoRepository;
+import br.com.oak.aworks.lancamentos.api.repository.filter.LancamentoFilter;
 import br.com.oak.aworks.lancamentos.api.service.LancamentoService;
 
 @RestController
@@ -35,8 +36,8 @@ public class LancamentoResource {
 	private ApplicationEventPublisher publisher;
 
 	@GetMapping
-	public List<Lancamento> listar() {
-		return lancamentoRepository.findAll();
+	public List<Lancamento> pesquisar(LancamentoFilter lancamentoFilter) {
+		return lancamentoRepository.filtrar(lancamentoFilter);
 	}
 
 	@GetMapping("/{codigo}")
