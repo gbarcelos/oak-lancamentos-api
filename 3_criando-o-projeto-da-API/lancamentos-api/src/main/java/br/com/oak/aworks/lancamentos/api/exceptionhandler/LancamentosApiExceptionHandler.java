@@ -25,7 +25,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import br.com.oak.aworks.lancamentos.api.exception.PessoaInexistenteOuInativaException;
 
 @ControllerAdvice
-public class AlgamoneyExceptionHandler extends ResponseEntityExceptionHandler {
+public class LancamentosApiExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@Autowired
 	private MessageSource messageSource;

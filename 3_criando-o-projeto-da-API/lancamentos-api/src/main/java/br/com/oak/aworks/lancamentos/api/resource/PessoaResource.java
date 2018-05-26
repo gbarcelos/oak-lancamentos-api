@@ -1,5 +1,7 @@
 package br.com.oak.aworks.lancamentos.api.resource;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -21,9 +23,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.oak.aworks.lancamentos.api.event.RecursoCriadoEvent;
+import br.com.oak.aworks.lancamentos.api.model.Categoria;
 import br.com.oak.aworks.lancamentos.api.model.Pessoa;
 import br.com.oak.aworks.lancamentos.api.repository.PessoaRepository;
 import br.com.oak.aworks.lancamentos.api.repository.filter.PessoaFilter;
+import br.com.oak.aworks.lancamentos.api.repository.projection.ResumoPessoa;
 import br.com.oak.aworks.lancamentos.api.service.PessoaService;
 
 @RestController
@@ -38,11 +42,23 @@ public class PessoaResource {
 
 	@Autowired
 	private ApplicationEventPublisher publisher;
+	
+	@GetMapping(params = "listar")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_PESSOA') and #oauth2.hasScope('read')")
+	public List<Pessoa> listar() {
+		return pessoaRepository.findAll();
+	}
 
 	@GetMapping
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_PESSOA') and #oauth2.hasScope('read')")
 	public Page<Pessoa> pesquisar(PessoaFilter pessoaFilter, Pageable pageable) {
 		return pessoaRepository.filtrar(pessoaFilter, pageable);
+	}
+	
+	@GetMapping(params = "resumo")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_PESSOA') and #oauth2.hasScope('read')")
+	public Page<ResumoPessoa> resumir(PessoaFilter pessoaFilter, Pageable pageable) {
+		return pessoaRepository.resumir(pessoaFilter, pageable);
 	}
 
 	@PostMapping

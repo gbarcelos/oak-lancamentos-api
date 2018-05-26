@@ -7,6 +7,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.oak.aworks.lancamentos.api.event.RecursoCriadoEvent;
 import br.com.oak.aworks.lancamentos.api.model.Categoria;
 import br.com.oak.aworks.lancamentos.api.repository.CategoriaRepository;
+import br.com.oak.aworks.lancamentos.api.repository.filter.CategoriaFilter;
 
 @RestController
 @RequestMapping("/categorias")
@@ -35,6 +38,12 @@ public class CategoriaResource {
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_CATEGORIA') and #oauth2.hasScope('read')")
 	public List<Categoria> listar() {
 		return categoriaRepository.findAll();
+	}
+	
+	@GetMapping(params = "pesquisa")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_CATEGORIA') and #oauth2.hasScope('read')")
+	public Page<Categoria> pesquisar(CategoriaFilter categoriaFilter, Pageable pageable) {
+		return categoriaRepository.filtrar(categoriaFilter, pageable);
 	}
 
 	@PostMapping

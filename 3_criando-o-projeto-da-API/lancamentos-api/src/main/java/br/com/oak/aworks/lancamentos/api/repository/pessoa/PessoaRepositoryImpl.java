@@ -16,9 +16,14 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 
+import br.com.oak.aworks.lancamentos.api.model.Categoria_;
+import br.com.oak.aworks.lancamentos.api.model.Endereco_;
+import br.com.oak.aworks.lancamentos.api.model.Lancamento_;
 import br.com.oak.aworks.lancamentos.api.model.Pessoa;
 import br.com.oak.aworks.lancamentos.api.model.Pessoa_;
 import br.com.oak.aworks.lancamentos.api.repository.filter.PessoaFilter;
+import br.com.oak.aworks.lancamentos.api.repository.projection.ResumoLancamento;
+import br.com.oak.aworks.lancamentos.api.repository.projection.ResumoPessoa;
 
 public class PessoaRepositoryImpl implements PessoaRepositoryQuery {
 
@@ -39,6 +44,32 @@ public class PessoaRepositoryImpl implements PessoaRepositoryQuery {
 		criteria.where(predicates);
 
 		TypedQuery<Pessoa> query = manager.createQuery(criteria);
+
+		adicionarRestricoesDePaginacao(query, pageable);
+
+		return new PageImpl<>(query.getResultList(), pageable, total(pessoaFilter));
+	}
+	
+	@Override
+	public Page<ResumoPessoa> resumir(PessoaFilter pessoaFilter, Pageable pageable) {
+		
+		CriteriaBuilder builder = manager.getCriteriaBuilder();
+
+		CriteriaQuery<ResumoPessoa> criteria = builder.createQuery(ResumoPessoa.class);
+		
+		Root<Pessoa> root = criteria.from(Pessoa.class);
+		
+		criteria.select(builder.construct(ResumoPessoa.class
+				, root.get(Pessoa_.codigo), root.get(Pessoa_.nome)
+				, root.get(Pessoa_.endereco).get(Endereco_.cidade)
+				, root.get(Pessoa_.endereco).get(Endereco_.estado)
+				, root.get(Pessoa_.ativo)));
+		
+		Predicate[] predicates = criarRestricoes(pessoaFilter, builder, root);
+
+		criteria.where(predicates);
+
+		TypedQuery<ResumoPessoa> query = manager.createQuery(criteria);
 
 		adicionarRestricoesDePaginacao(query, pageable);
 
