@@ -3,6 +3,7 @@
 Servers/*
 .metadata
 .settings
+.recommenders
 .classpath
 .project
 target/
