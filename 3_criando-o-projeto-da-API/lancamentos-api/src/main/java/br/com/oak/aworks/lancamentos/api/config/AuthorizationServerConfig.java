@@ -2,6 +2,8 @@ package br.com.oak.aworks.lancamentos.api.config;
 
 import java.util.Arrays;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +19,7 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
+import br.com.oak.aworks.lancamentos.api.config.property.LancamentosApiProperty;
 import br.com.oak.aworks.lancamentos.api.config.token.CustomTokenEnhancer;
 
 @Profile("oauth-security")
@@ -24,11 +27,22 @@ import br.com.oak.aworks.lancamentos.api.config.token.CustomTokenEnhancer;
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter{
 	
+	private static final Logger LOGGER = Logger.getLogger(AuthorizationServerConfig.class);
+	
 	@Autowired
 	private AuthenticationManager authenticationManager;
 	
+	@Autowired
+	private LancamentosApiProperty lancamentosApiProperty;
+	
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+		
+		String originPermitida = lancamentosApiProperty.getOriginPermitida();
+		
+		LOGGER.log(Level.INFO, " -> configure(ClientDetailsServiceConfigurer clients)");
+		
+		LOGGER.log(Level.INFO, " -> originPermitida: " + originPermitida);
 
 		clients.inMemory()
 				.withClient("angular")
