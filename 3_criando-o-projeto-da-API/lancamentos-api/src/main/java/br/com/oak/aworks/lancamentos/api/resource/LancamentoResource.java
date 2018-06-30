@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.oak.aworks.lancamentos.api.event.RecursoCriadoEvent;
 import br.com.oak.aworks.lancamentos.api.model.Lancamento;
 import br.com.oak.aworks.lancamentos.api.model.dto.LancamentoEstatisticaCategoria;
+import br.com.oak.aworks.lancamentos.api.model.dto.LancamentoEstatisticaDia;
 import br.com.oak.aworks.lancamentos.api.repository.LancamentoRepository;
 import br.com.oak.aworks.lancamentos.api.repository.filter.LancamentoFilter;
 import br.com.oak.aworks.lancamentos.api.repository.projection.ResumoLancamento;
@@ -43,6 +44,12 @@ public class LancamentoResource {
 
 	@Autowired
 	private ApplicationEventPublisher publisher;
+	
+	@GetMapping("/estatisticas/por-dia")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
+	public List<LancamentoEstatisticaDia> porDia() {
+		return this.lancamentoRepository.porDia(LocalDate.now());
+	}
 	
 	@GetMapping("/estatisticas/por-categoria")
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
