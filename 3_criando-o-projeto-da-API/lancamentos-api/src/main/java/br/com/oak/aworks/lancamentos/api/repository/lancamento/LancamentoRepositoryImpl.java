@@ -23,6 +23,7 @@ import br.com.oak.aworks.lancamentos.api.model.Lancamento_;
 import br.com.oak.aworks.lancamentos.api.model.Pessoa_;
 import br.com.oak.aworks.lancamentos.api.model.dto.LancamentoEstatisticaCategoria;
 import br.com.oak.aworks.lancamentos.api.model.dto.LancamentoEstatisticaDia;
+import br.com.oak.aworks.lancamentos.api.model.dto.LancamentoEstatisticaPessoa;
 import br.com.oak.aworks.lancamentos.api.repository.filter.LancamentoFilter;
 import br.com.oak.aworks.lancamentos.api.repository.projection.ResumoLancamento;
 
@@ -32,7 +33,38 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
 	private EntityManager manager;
 	
 	@Override
+	public List<LancamentoEstatisticaPessoa> porPessoa(LocalDate inicio, LocalDate fim) {
+
+		CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
+		
+		CriteriaQuery<LancamentoEstatisticaPessoa> criteriaQuery = criteriaBuilder.
+				createQuery(LancamentoEstatisticaPessoa.class);
+		
+		Root<Lancamento> root = criteriaQuery.from(Lancamento.class);
+		
+		criteriaQuery.select(criteriaBuilder.construct(LancamentoEstatisticaPessoa.class, 
+				root.get(Lancamento_.tipo),
+				root.get(Lancamento_.pessoa),
+				criteriaBuilder.sum(root.get(Lancamento_.valor))));
+
+		criteriaQuery.where(
+				criteriaBuilder.greaterThanOrEqualTo(root.get(Lancamento_.dataVencimento), 
+						inicio),
+				criteriaBuilder.lessThanOrEqualTo(root.get(Lancamento_.dataVencimento), 
+						fim));
+		
+		criteriaQuery.groupBy(root.get(Lancamento_.tipo), 
+				root.get(Lancamento_.pessoa));
+		
+		TypedQuery<LancamentoEstatisticaPessoa> typedQuery = manager
+				.createQuery(criteriaQuery);
+		
+		return typedQuery.getResultList();
+	}
+	
+	@Override
 	public List<LancamentoEstatisticaDia> porDia(LocalDate mesReferencia) {
+		
 		CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
 		
 		CriteriaQuery<LancamentoEstatisticaDia> criteriaQuery = criteriaBuilder.

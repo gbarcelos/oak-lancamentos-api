@@ -9,10 +9,13 @@ import org.springframework.data.domain.Pageable;
 import br.com.oak.aworks.lancamentos.api.model.Lancamento;
 import br.com.oak.aworks.lancamentos.api.model.dto.LancamentoEstatisticaCategoria;
 import br.com.oak.aworks.lancamentos.api.model.dto.LancamentoEstatisticaDia;
+import br.com.oak.aworks.lancamentos.api.model.dto.LancamentoEstatisticaPessoa;
 import br.com.oak.aworks.lancamentos.api.repository.filter.LancamentoFilter;
 import br.com.oak.aworks.lancamentos.api.repository.projection.ResumoLancamento;
 
 public interface LancamentoRepositoryQuery {
+	
+	public List<LancamentoEstatisticaPessoa> porPessoa(LocalDate inicio, LocalDate fim);
 	
 	public List<LancamentoEstatisticaCategoria> porCategoria(LocalDate mesReferencia);
 	
