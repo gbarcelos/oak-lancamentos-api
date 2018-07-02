@@ -10,6 +10,7 @@ import java.util.Map;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import br.com.oak.aworks.lancamentos.api.exception.PessoaInexistenteOuInativaException;
@@ -18,7 +19,6 @@ import br.com.oak.aworks.lancamentos.api.model.Pessoa;
 import br.com.oak.aworks.lancamentos.api.model.dto.LancamentoEstatisticaPessoa;
 import br.com.oak.aworks.lancamentos.api.repository.LancamentoRepository;
 import br.com.oak.aworks.lancamentos.api.repository.PessoaRepository;
-
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -32,6 +32,11 @@ public class LancamentoService {
 	
 	@Autowired 
 	private LancamentoRepository lancamentoRepository;
+	
+	@Scheduled(cron = "0 0 6 * * *")
+	public void avisarSobreLancamentosVencidos() {
+		System.out.println(">>>>>>>>>>>>>>> Método sendo executado...");
+	}
 	
 	public byte[] relatorioPorPessoa(LocalDate inicio, LocalDate fim) throws Exception {
 
