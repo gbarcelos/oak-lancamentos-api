@@ -14,11 +14,14 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import br.com.oak.aworks.lancamentos.api.exception.PessoaInexistenteOuInativaException;
+import br.com.oak.aworks.lancamentos.api.mail.Mailer;
 import br.com.oak.aworks.lancamentos.api.model.Lancamento;
 import br.com.oak.aworks.lancamentos.api.model.Pessoa;
+import br.com.oak.aworks.lancamentos.api.model.Usuario;
 import br.com.oak.aworks.lancamentos.api.model.dto.LancamentoEstatisticaPessoa;
 import br.com.oak.aworks.lancamentos.api.repository.LancamentoRepository;
 import br.com.oak.aworks.lancamentos.api.repository.PessoaRepository;
+import br.com.oak.aworks.lancamentos.api.repository.UsuarioRepository;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -26,6 +29,8 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 @Service
 public class LancamentoService {
+	
+	private static final String DESTINATARIOS = "ROLE_PESQUISAR_LANCAMENTO";
 
 	@Autowired
 	private PessoaRepository pessoaRepository;
@@ -33,9 +38,20 @@ public class LancamentoService {
 	@Autowired 
 	private LancamentoRepository lancamentoRepository;
 	
+	@Autowired 
+	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private Mailer mailer;
+	
 	@Scheduled(cron = "0 0 6 * * *")
 	public void avisarSobreLancamentosVencidos() {
-		System.out.println(">>>>>>>>>>>>>>> Método sendo executado...");
+
+		List<Lancamento> vencidos = lancamentoRepository.findByDataVencimentoLessThanEqualAndDataPagamentoIsNull(LocalDate.now());
+		
+		List<Usuario> destinatarios = usuarioRepository.findByPermissoesDescricao(DESTINATARIOS);
+		
+		mailer.avisarSobreLancamentosVencidos(vencidos, destinatarios);
 	}
 	
 	public byte[] relatorioPorPessoa(LocalDate inicio, LocalDate fim) throws Exception {
