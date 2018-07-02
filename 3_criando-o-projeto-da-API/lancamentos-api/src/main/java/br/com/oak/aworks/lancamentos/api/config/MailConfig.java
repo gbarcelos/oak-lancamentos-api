@@ -23,17 +23,17 @@ public class MailConfig {
 
 		props.put("mail.transport.protocol", "smtp");
 		props.put("mail.smtp.auth", true);
-		props.put("mail.starttls", true);
+		props.put("mail.smtp.starttls.enable", true);
 		props.put("mail.smtp.connectiontimeout", 10000);
-
-		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 		
+		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+
 		mailSender.setJavaMailProperties(props);
 		mailSender.setHost(property.getMail().getHost());
 		mailSender.setPort(property.getMail().getPort());
 		mailSender.setUsername(property.getMail().getUsername());
 		mailSender.setPassword(property.getMail().getPassword());
-
+		
 		return mailSender;
 	}
 }
