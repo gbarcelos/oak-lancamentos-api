@@ -35,10 +35,10 @@ public class Pessoa {
 
 	@NotNull
 	private Boolean ativo;
-	
+
 	@JsonIgnoreProperties("pessoa")
 	@Valid
-	@OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Contato> contatos;
 
 	public Long getCodigo() {
@@ -72,7 +72,7 @@ public class Pessoa {
 	public void setAtivo(Boolean ativo) {
 		this.ativo = ativo;
 	}
-	
+
 	@JsonIgnore
 	@Transient
 	public boolean isInativo() {
