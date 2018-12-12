@@ -1,8 +1,6 @@
 package br.com.oak.aworks.lancamentos.api.resource;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -33,12 +31,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import br.com.oak.aworks.lancamentos.api.event.RecursoCriadoEvent;
 import br.com.oak.aworks.lancamentos.api.model.Lancamento;
+import br.com.oak.aworks.lancamentos.api.model.dto.Anexo;
 import br.com.oak.aworks.lancamentos.api.model.dto.LancamentoEstatisticaCategoria;
 import br.com.oak.aworks.lancamentos.api.model.dto.LancamentoEstatisticaDia;
 import br.com.oak.aworks.lancamentos.api.repository.LancamentoRepository;
 import br.com.oak.aworks.lancamentos.api.repository.filter.LancamentoFilter;
 import br.com.oak.aworks.lancamentos.api.repository.projection.ResumoLancamento;
 import br.com.oak.aworks.lancamentos.api.service.LancamentoService;
+import br.com.oak.aworks.lancamentos.api.storage.S3;
 
 @RestController
 @RequestMapping("/lancamentos")
@@ -53,18 +53,16 @@ public class LancamentoResource {
 	@Autowired
 	private ApplicationEventPublisher publisher;
 	
+	@Autowired
+	private S3 s3;
+	
 	@PostMapping("/anexo")
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_LANCAMENTO') and #oauth2.hasScope('write')")
-	public String uploadAnexo(@RequestParam MultipartFile anexo) throws IOException {
+	public Anexo uploadAnexo(@RequestParam MultipartFile anexo) throws IOException {
 
-		OutputStream out = new FileOutputStream(
-				"C:/Users/Gustavo/Desktop/anexo--" + anexo.getOriginalFilename());
+		String nome = s3.salvarTemporariamente(anexo);
 
-		out.write(anexo.getBytes());
-
-		out.close();
-
-		return "ok";
+		return new Anexo(nome, s3.configurarUrl(nome));
 	}
 	
 	@GetMapping("/relatorios/por-pessoa")
