@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -24,6 +25,7 @@ import br.com.oak.aworks.lancamentos.api.model.dto.LancamentoEstatisticaPessoa;
 import br.com.oak.aworks.lancamentos.api.repository.LancamentoRepository;
 import br.com.oak.aworks.lancamentos.api.repository.PessoaRepository;
 import br.com.oak.aworks.lancamentos.api.repository.UsuarioRepository;
+import br.com.oak.aworks.lancamentos.api.storage.S3;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -47,6 +49,9 @@ public class LancamentoService {
 	
 	@Autowired
 	private Mailer mailer;
+	
+	@Autowired
+	private S3 s3;
 	
 	@Scheduled(cron = "0 0 6 * * *")
 	public void avisarSobreLancamentosVencidos() {
@@ -102,6 +107,10 @@ public class LancamentoService {
 	public Lancamento salvar(Lancamento lancamento) {
 
 		validarPessoa(lancamento);
+		
+		if (StringUtils.isNotBlank(lancamento.getAnexo())) {
+			s3.salvar(lancamento.getAnexo());
+		}
 
 		return lancamentoRepository.save(lancamento);
 	}
