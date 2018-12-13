@@ -122,6 +122,17 @@ public class LancamentoService {
 		if (!lancamento.getPessoa().equals(lancamentoSalvo.getPessoa())) {
 			validarPessoa(lancamento);
 		}
+		
+		if (StringUtils.isBlank(lancamento.getAnexo())
+				&& StringUtils.isNotBlank(lancamentoSalvo.getAnexo())) {
+			
+			s3.remover(lancamentoSalvo.getAnexo());
+
+		} else if (StringUtils.isNotBlank(lancamento.getAnexo())
+				&& !lancamento.getAnexo().equals(lancamentoSalvo.getAnexo())) {
+			
+			s3.substituir(lancamentoSalvo.getAnexo(), lancamento.getAnexo());
+		}
 
 		BeanUtils.copyProperties(lancamento, lancamentoSalvo, "codigo");
 
