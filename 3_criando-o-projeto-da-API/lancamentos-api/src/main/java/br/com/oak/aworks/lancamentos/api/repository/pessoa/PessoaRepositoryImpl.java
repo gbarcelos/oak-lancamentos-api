@@ -62,7 +62,7 @@ public class PessoaRepositoryImpl implements PessoaRepositoryQuery {
 		criteria.select(builder.construct(ResumoPessoa.class
 				, root.get(Pessoa_.codigo), root.get(Pessoa_.nome)
 				, root.get(Pessoa_.endereco).get(Endereco_.cidade)
-				, root.get(Pessoa_.endereco).get(Endereco_.estado)
+//				, root.get(Pessoa_.endereco).get(Endereco_.estado)
 				, root.get(Pessoa_.ativo)));
 		
 		Predicate[] predicates = criarRestricoes(pessoaFilter, builder, root);
