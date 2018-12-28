@@ -1,5 +1,7 @@
 package br.com.oak.aworks.lancamentos.api.repository.projection;
 
+import br.com.oak.aworks.lancamentos.api.model.Cidade;
+
 public class ResumoPessoa {
 
 	private Long codigo;
@@ -12,11 +14,16 @@ public class ResumoPessoa {
 
 	private Boolean ativo;
 
-	public ResumoPessoa(Long codigo, String nome, String cidade, String estado, Boolean ativo) {
+	public ResumoPessoa(Long codigo, String nome, Cidade cidade, Boolean ativo) {
 		this.codigo = codigo;
 		this.nome = nome;
-		this.cidade = cidade;
-		this.estado = estado;
+		
+		if (cidade != null) {
+			
+			this.cidade = cidade.getNome();
+			this.estado = cidade.getEstado().getNome();
+		}
+
 		this.ativo = ativo;
 	}
 
