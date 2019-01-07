@@ -5,8 +5,8 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Level;
+//import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,7 +21,7 @@ import br.com.oak.aworks.lancamentos.api.repository.UsuarioRepository;
 @Service
 public class AppUserDetailsService implements UserDetailsService {
 	
-	private static final Logger LOGGER = Logger.getLogger(AppUserDetailsService.class);
+//	private static final Logger LOGGER = Logger.getLogger(AppUserDetailsService.class);
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
@@ -29,7 +29,7 @@ public class AppUserDetailsService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		
-		LOGGER.log(Level.INFO, "loadUserByUsername: " + email);
+//		LOGGER.log(Level.INFO, "loadUserByUsername: " + email);
 
 		Optional<Usuario> usuarioOptional = usuarioRepository.findByEmail(email);
 		

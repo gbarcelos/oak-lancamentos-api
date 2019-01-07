@@ -1,7 +1,7 @@
 package br.com.oak.aworks.lancamentos.api.config;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Level;
+//import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
@@ -20,7 +20,7 @@ import br.com.oak.aworks.lancamentos.api.security.LancamentoPasswordEncoder;
 @EnableWebSecurity
 public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	private static final Logger LOGGER = Logger.getLogger(BasicSecurityConfig.class);
+//	private static final Logger LOGGER = Logger.getLogger(BasicSecurityConfig.class);
 
 	@Autowired
 	private UserDetailsService userDetailsService;
@@ -33,9 +33,9 @@ public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		String originPermitida = lancamentosApiProperty.getOriginPermitida();
 
-		LOGGER.log(Level.INFO, " -> configure(AuthenticationManagerBuilder auth)");
-
-		LOGGER.log(Level.INFO, " -> originPermitida: " + originPermitida);
+//		LOGGER.log(Level.INFO, " -> configure(AuthenticationManagerBuilder auth)");
+//
+//		LOGGER.log(Level.INFO, " -> originPermitida: " + originPermitida);
 
 		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 	}

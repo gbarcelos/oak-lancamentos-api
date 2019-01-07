@@ -2,8 +2,8 @@ package br.com.oak.aworks.lancamentos.api.config;
 
 import java.util.Arrays;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Level;
+//import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,7 +27,7 @@ import br.com.oak.aworks.lancamentos.api.config.token.CustomTokenEnhancer;
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter{
 	
-	private static final Logger LOGGER = Logger.getLogger(AuthorizationServerConfig.class);
+//	private static final Logger LOGGER = Logger.getLogger(AuthorizationServerConfig.class);
 	
 	@Autowired
 	private AuthenticationManager authenticationManager;
@@ -40,9 +40,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		
 		String originPermitida = lancamentosApiProperty.getOriginPermitida();
 		
-		LOGGER.log(Level.INFO, " -> configure(ClientDetailsServiceConfigurer clients)");
-		
-		LOGGER.log(Level.INFO, " -> originPermitida: " + originPermitida);
+//		LOGGER.log(Level.INFO, " -> configure(ClientDetailsServiceConfigurer clients)");
+//		
+//		LOGGER.log(Level.INFO, " -> originPermitida: " + originPermitida);
 
 		clients.inMemory()
 				.withClient("angular")

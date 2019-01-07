@@ -1,7 +1,7 @@
 package br.com.oak.aworks.lancamentos.api.config;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Level;
+//import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +29,7 @@ import br.com.oak.aworks.lancamentos.api.security.LancamentoPasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	
-	private static final Logger LOGGER = Logger.getLogger(ResourceServerConfig.class);
+//	private static final Logger LOGGER = Logger.getLogger(ResourceServerConfig.class);
 	
 	@Autowired
 	private UserDetailsService userDetailsService;
@@ -42,9 +42,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 		
 		String originPermitida = lancamentosApiProperty.getOriginPermitida();
 		
-		LOGGER.log(Level.INFO, " -> configure(AuthenticationManagerBuilder auth)");
-		
-		LOGGER.log(Level.INFO, " -> originPermitida: " + originPermitida);
+//		LOGGER.log(Level.INFO, " -> configure(AuthenticationManagerBuilder auth)");
+//		
+//		LOGGER.log(Level.INFO, " -> originPermitida: " + originPermitida);
 		
 		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 	}
