@@ -1,5 +1,7 @@
 package br.com.oak.aworks.lancamentos.api.config;
 
+import java.security.SecureRandom;
+
 //import org.apache.log4j.Level;
 //import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +13,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import br.com.oak.aworks.lancamentos.api.config.property.LancamentosApiProperty;
-import br.com.oak.aworks.lancamentos.api.security.LancamentoPasswordEncoder;
 
 @Profile("basic-security")
 @EnableWebSecurity
@@ -42,7 +44,7 @@ public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
-		return new LancamentoPasswordEncoder();
+		return new BCryptPasswordEncoder();
 	}
 
 	@Override
