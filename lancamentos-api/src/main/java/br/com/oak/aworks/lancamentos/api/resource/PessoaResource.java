@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.oak.aworks.lancamentos.api.event.RecursoCriadoEvent;
-import br.com.oak.aworks.lancamentos.api.model.Categoria;
 import br.com.oak.aworks.lancamentos.api.model.Pessoa;
 import br.com.oak.aworks.lancamentos.api.repository.PessoaRepository;
 import br.com.oak.aworks.lancamentos.api.repository.filter.PessoaFilter;

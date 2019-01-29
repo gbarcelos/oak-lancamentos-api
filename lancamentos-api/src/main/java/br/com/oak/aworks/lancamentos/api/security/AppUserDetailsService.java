@@ -20,16 +20,12 @@ import br.com.oak.aworks.lancamentos.api.repository.UsuarioRepository;
 
 @Service
 public class AppUserDetailsService implements UserDetailsService {
-	
-//	private static final Logger LOGGER = Logger.getLogger(AppUserDetailsService.class);
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		
-//		LOGGER.log(Level.INFO, "loadUserByUsername: " + email);
 
 		Optional<Usuario> usuarioOptional = usuarioRepository.findByEmail(email);
 		

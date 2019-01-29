@@ -34,14 +34,14 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 		clients.inMemory()
 				.withClient("angular")
-				.secret("$2a$10$p8ER88v4MUAX6LDJc8xnjOD3fOKVm.pK0DvzovYnXBLFgpItkPZ9O") //@ngul@r0
+				.secret("$2a$10$p8ER88v4MUAX6LDJc8xnjOD3fOKVm.pK0DvzovYnXBLFgpItkPZ9O")
 				.scopes("read", "write")
 				.authorizedGrantTypes("password", "refresh_token")
 				.accessTokenValiditySeconds(1800)
 				.refreshTokenValiditySeconds(3600 * 24)
 			.and()
 				.withClient("mobile")
-				.secret("$2a$10$or3gS19SRmIaa7pXhz3mIuNV1pY6k/3fHDsZdroCblebkEljHMj6e") //m0b1l30
+				.secret("$2a$10$or3gS19SRmIaa7pXhz3mIuNV1pY6k/3fHDsZdroCblebkEljHMj6e")
 				.scopes("read")
 				.authorizedGrantTypes("password", "refresh_token")
 				.accessTokenValiditySeconds(1800)
@@ -63,7 +63,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Bean
 	public JwtAccessTokenConverter accessTokenConverter() {
 		JwtAccessTokenConverter accessTokenConverter = new JwtAccessTokenConverter();
-		accessTokenConverter.setSigningKey("algaworks");
+		accessTokenConverter.setSigningKey("oaklancamentos");
 		return accessTokenConverter;
 	}
 

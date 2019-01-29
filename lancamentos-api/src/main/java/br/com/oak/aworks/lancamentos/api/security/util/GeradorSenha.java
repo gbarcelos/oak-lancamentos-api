@@ -9,7 +9,7 @@ public class GeradorSenha {
 		
 		
 		for(int i = 0; i < 5; i++) {
-			System.out.println(encoder.encode("m0b1l30"));	
+			System.out.println(encoder.encode("teste"));	
 		}
 		
 	}

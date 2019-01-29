@@ -1,9 +1,5 @@
 package br.com.oak.aworks.lancamentos.api.config;
 
-import java.security.SecureRandom;
-
-//import org.apache.log4j.Level;
-//import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
@@ -16,29 +12,15 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import br.com.oak.aworks.lancamentos.api.config.property.LancamentosApiProperty;
-
 @Profile("basic-security")
 @EnableWebSecurity
 public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
 
-//	private static final Logger LOGGER = Logger.getLogger(BasicSecurityConfig.class);
-
 	@Autowired
 	private UserDetailsService userDetailsService;
 
-	@Autowired
-	private LancamentosApiProperty lancamentosApiProperty;
-
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
-		String originPermitida = lancamentosApiProperty.getOriginPermitida();
-
-//		LOGGER.log(Level.INFO, " -> configure(AuthenticationManagerBuilder auth)");
-//
-//		LOGGER.log(Level.INFO, " -> originPermitida: " + originPermitida);
-
 		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 	}
 
